@@ -1,11 +1,3 @@
-/* 
-TODO
-add basic argument functionality
-add parameters to read_file so that it takes arguments
-create argument parsing crate to add functionality to arguments
-add other features that cat has
-*/
-
 use std::fs;
 use std::error::Error;
 use std::env;
