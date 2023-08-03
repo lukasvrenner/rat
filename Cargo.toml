@@ -1,7 +1,9 @@
 [package]
 name = "rat"
+license = "GPL-3.0-only"
 version = "0.1.0"
-edition = "2021"
+edition = "2023"
+description = "A basic cat implementation written in rust"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
