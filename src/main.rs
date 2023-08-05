@@ -36,7 +36,11 @@ fn read_file(file: &String) -> Result<String, Box<dyn Error>> {
 
 fn apply_options(file_contents: &str, args: &Args) -> String {
     if args.number {
-        file_contents.lines().enumerate().map(|(i, line)| format!("{i}  {line}\n")).collect()
+        file_contents
+            .lines()
+            .enumerate()
+            .map(|(i, line)| format!("{i}  {line}\n"))
+            .collect()
            
     } else {
         file_contents.to_string()
