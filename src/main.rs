@@ -34,7 +34,7 @@ fn read_file(file: &String) -> Result<String, Box<dyn Error>> {
     Ok(contents)
 }
 
-fn apply_options<'a>(file_contents: &'a str, args: &Args) -> String {
+fn apply_options(file_contents: &str, args: &Args) -> String {
     if args.number {
         file_contents.lines().enumerate().map(|(i, line)| format!("{i}  {line}\n")).collect()
            
