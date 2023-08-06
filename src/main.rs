@@ -14,9 +14,12 @@ struct Args {
     number: bool,
 
     /// Supress repeated empty output lines
-    #[arg(short, long, default_value_t = false)]
+    #[arg(short, long = "squeeze-blank", default_value_t = false)]
     squeeze_blank: bool,
 
+    /// Display $ at the end of each line
+    #[arg(short = 'E', long = "show-ends", default_value_t = false)]
+    show_ends: bool,
 
 }
 
@@ -46,6 +49,9 @@ fn apply_options<'a>(file_contents: &'a mut String, args: &Args) -> &'a str {
     if args.squeeze_blank {
         *file_contents = squeeze_blank(file_contents);
     }
+    if args.show_ends {
+        *file_contents = show_ends(file_contents);
+    }
         file_contents
     
 }
@@ -54,7 +60,7 @@ fn number(text: &str) -> String {
     text
         .lines()
         .enumerate()
-        .map(|(i, line)| format!("{}  {line}\n", i+1))
+        .map(|(i, line)| format!("     {}  {line}\n", i+1))
         .collect()
 }
 
@@ -62,22 +68,10 @@ fn squeeze_blank(text: &str) -> String {
     todo!();
 }
 
-// #[cfg(test)]
-// mod tests {
-//     #[test]
-//     let file_contents: String = String::from("
-// This is a string
-//
-// It has multiple lines
-//
-//
-// It even has larger gaps
-//                                                  ");
-//     assert_eq!(number(file_contents), String::from("
-// 1  This is a string
-// 2  
-// 3  It has multiple lines
-// 4
-// 5  It even has larger gaps
-//                                                    "));
-// }
+fn show_ends(text: &str) -> String {
+    text
+        .lines()
+        .map(|line| format!("{line}$\n"))
+        .collect()
+}
+
