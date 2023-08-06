@@ -38,7 +38,7 @@ fn read_file(file: &String) -> Result<String, Box<dyn Error>> {
     Ok(contents)
 }
 
-fn apply_options(file_contents: &mut String, args: &Args) -> String {
+fn apply_options<'a>(file_contents: &'a mut String, args: &Args) -> &'a str {
     if args.number {
         *file_contents = number(file_contents);
            
@@ -46,7 +46,7 @@ fn apply_options(file_contents: &mut String, args: &Args) -> String {
     if args.squeeze_blank {
         *file_contents = squeeze_blank(file_contents);
     }
-        file_contents.to_string()
+        file_contents
     
 }
 
