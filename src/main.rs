@@ -47,18 +47,15 @@ fn apply_options<'a>(file_contents: &'a mut String, args: &Args) -> &'a str {
     if args.squeeze_blank {
         *file_contents = squeeze_blank(file_contents);
     }
-    if args.number {
+    if args.number_nonblank {
+        *file_contents = number_nonblank(file_contents);
+    } else if args.number { // if numbering nonblank only, this will be ignored
         *file_contents = number(file_contents);
-           
     } 
     if args.show_ends {
         *file_contents = show_ends(file_contents);
     }
-    if args.number_nonblank {
-        *file_contents = number_nonblank(file_contents);
-    }
         file_contents
-    
 }
 
 // removes consecutive blank lines
@@ -88,8 +85,20 @@ fn number(text: &str) -> String {
         .collect()
 }
 
+// numbers each non-blank line
 fn number_nonblank(text: &str) -> String {
-    todo!();
+    let mut count = 0;
+    text
+        .lines()
+        .map(|line| {
+            if !line.is_empty() {
+                count += 1;
+                return format!("     {count}  {line}\n");
+            } else {
+                return format!("        {line}\n");
+            }
+        })
+        .collect()
 }
 
 
