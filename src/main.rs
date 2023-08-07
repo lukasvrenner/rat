@@ -13,14 +13,17 @@ struct Args {
     #[arg(short, long, default_value_t = false)]
     number: bool,
 
+    /// Numbers nonempty output lines (overrides -n)
+    #[arg(short = 'b', long = "number-nonblank", default_value_t = false)]
+    number_nonblank: bool,
+
     /// Supress repeated empty output lines
     #[arg(short, long = "squeeze-blank", default_value_t = false)]
     squeeze_blank: bool,
 
-    /// Display $ at the end of each line
+    /// Mark the end of each line with $
     #[arg(short = 'E', long = "show-ends", default_value_t = false)]
     show_ends: bool,
-
 }
 
 fn main() {
@@ -34,7 +37,6 @@ fn main() {
     print!("{contents}");
 }
 
-// reads text file
 fn read_file(file: &String) -> Result<String, Box<dyn Error>> {
     let contents = fs::read_to_string(format!("{file}"))?;
 
@@ -42,20 +44,42 @@ fn read_file(file: &String) -> Result<String, Box<dyn Error>> {
 }
 
 fn apply_options<'a>(file_contents: &'a mut String, args: &Args) -> &'a str {
+    if args.squeeze_blank {
+        *file_contents = squeeze_blank(file_contents);
+    }
     if args.number {
         *file_contents = number(file_contents);
            
     } 
-    if args.squeeze_blank {
-        *file_contents = squeeze_blank(file_contents);
-    }
     if args.show_ends {
         *file_contents = show_ends(file_contents);
+    }
+    if args.number_nonblank {
+        *file_contents = number_nonblank(file_contents);
     }
         file_contents
     
 }
 
+// removes consecutive blank lines
+fn squeeze_blank(text: &str) -> String {
+    let mut prev_line_is_blank = false;
+    text
+        .lines()
+        .filter_map(|line| {
+            if prev_line_is_blank && line.is_empty() {
+                return None
+            } else if line.is_empty() {
+                prev_line_is_blank = true;
+            } else {
+                prev_line_is_blank = false;
+            }
+            Some(format!("{line}\n"))
+        })
+        .collect()
+}
+
+// numbers each line
 fn number(text: &str) -> String {
     text
         .lines()
@@ -64,10 +88,12 @@ fn number(text: &str) -> String {
         .collect()
 }
 
-fn squeeze_blank(text: &str) -> String {
+fn number_nonblank(text: &str) -> String {
     todo!();
 }
 
+
+// adds $ to the end of each line
 fn show_ends(text: &str) -> String {
     text
         .lines()
