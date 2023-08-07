@@ -1,10 +1,15 @@
 # rat
 A basic cat implementation written in rust
-### WORK IN PROGRESS
+### Work in Progress
 This is a work in progress. Any contributions, ideas, and feedback are greatly appreciated
 
-### TODO
-- Add more options
+#### Current Features
+- number: number output lines
+- show-ends: mark the end of each line with $
+
+#### TODO
+- number-nonblank: nunber nonblank lines
+- Other cat features
 - Add support for taking stdin (piping)
 
 ### License
