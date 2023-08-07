@@ -6,9 +6,10 @@ This is a work in progress. Any contributions, ideas, and feedback are greatly a
 #### Current Features
 - number: number output lines
 - show-ends: mark the end of each line with $
+- number-nonblank: number nonsblank output lines
+- squeeze-blank: remove consequtive output lines
 
 #### TODO
-- number-nonblank: nunber nonblank lines
 - Other cat features
 - Add support for taking stdin (piping)
 
