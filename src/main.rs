@@ -50,7 +50,7 @@ fn apply_options<'a>(file_contents: &'a mut String, args: &Args) -> &'a str {
     if args.number_nonblank {
         *file_contents = number_nonblank(file_contents);
     } else if args.number { // if numbering nonblank only, this will be ignored
-        *file_contents = number(file_contents);
+        *file_contents = number_lines(file_contents);
     } 
     if args.show_ends {
         *file_contents = show_ends(file_contents);
@@ -77,7 +77,7 @@ fn squeeze_blank(text: &str) -> String {
 }
 
 // numbers each line
-fn number(text: &str) -> String {
+fn number_lines(text: &str) -> String {
     text
         .lines()
         .enumerate()
