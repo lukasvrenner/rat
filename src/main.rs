@@ -1,5 +1,4 @@
 use std::fs;
-use std::error::Error;
 use std::process;
 use clap::Parser;
 
@@ -11,7 +10,7 @@ struct Args {
 
     /// Number all output lines
     #[arg(short, long, default_value_t = false)]
-    number: bool,
+    number_lines: bool,
 
     /// Numbers nonempty output lines (overrides -n)
     #[arg(short = 'b', long = "number-nonblank", default_value_t = false)]
@@ -28,20 +27,16 @@ struct Args {
 
 fn main() {
     let args = Args::parse();
-    let mut contents = read_file(&args.file).unwrap_or_else(|err| {
+    let mut file_contents = fs::read_to_string(&args.file)
+        .unwrap_or_else(|err| {
         eprintln!("error: could not read file: {err}");
         process::exit(1);
 
     });
-    apply_options(&mut contents, &args);
-    print!("{contents}");
+    apply_options(&mut file_contents, &args);
+    print!("{}", file_contents);
 }
 
-fn read_file(file: &String) -> Result<String, Box<dyn Error>> {
-    let contents = fs::read_to_string(format!("{file}"))?;
-
-    Ok(contents)
-}
 
 fn apply_options<'a>(file_contents: &'a mut String, args: &Args) -> &'a str {
     if args.squeeze_blank {
@@ -49,7 +44,7 @@ fn apply_options<'a>(file_contents: &'a mut String, args: &Args) -> &'a str {
     }
     if args.number_nonblank {
         *file_contents = number_nonblank(file_contents);
-    } else if args.number { // if numbering nonblank only, this will be ignored
+    } else if args.number_lines { // if numbering nonblank, this will be ignored
         *file_contents = number_lines(file_contents);
     } 
     if args.show_ends {
@@ -108,5 +103,64 @@ fn show_ends(text: &str) -> String {
         .lines()
         .map(|line| format!("{line}$\n"))
         .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn numbered_lines() {
+    let numbered = "     1  this is a line
+     2  this is another line
+     3  this is another line
+     4  
+     5  
+     6  
+     7  here is some text 
+     8  
+     9  
+    10  this is a line\n"; // note the indentation of the 10
+    let unnumbered = "\
+this is a line
+this is another line
+this is another line
+
+
+
+here is some text 
+
+
+this is a line";    
+    assert_eq!(numbered, number_lines(unnumbered));
+    }
+
+    #[test]
+    fn numbered_nonblank() { // note the hidden whitespaces in the "empty" lines
+    let numbered_nonblank = "     1  this is a line
+     2  this is another line
+     3  this is another line
+        
+        
+        
+     4  here is some text 
+        
+        
+     5  this is a line\n"; // note the indentation of the 10
+    let unnumbered = "\
+this is a line
+this is another line
+this is another line
+
+
+
+here is some text 
+
+
+this is a line";    
+    assert_eq!(numbered_nonblank, number_nonblank(unnumbered));
+
+    }
+
 }
 
