@@ -38,7 +38,7 @@ fn number_lines(text: &str) -> String {
     text
         .lines()
         .enumerate()
-        .map(|(i, line)| format!("     {}  {line}\n", i+1))
+        .map(|(i, line)| format!("     {}  {line}\n", i+1)) // currently causes test to fail
         .collect()
 }
 
@@ -108,7 +108,7 @@ this is a line";
      4  here is some text 
         
         
-     5  this is a line\n"; // note the indentation of the 10
+     5  this is a line\n";
     let unnumbered = "\
 this is a line
 this is another line
