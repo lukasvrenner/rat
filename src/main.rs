@@ -49,6 +49,6 @@ fn main() {
     apply_options(&mut file_contents, &args);
     print!("{}", file_contents); // does not print a new line because text ends in new line
 }
-
+/* i am a conturibiter on this project! */
 
 
