@@ -37,11 +37,9 @@ fn main() {
         file_contents.push_str(
         &fs::read_to_string(i)
             .unwrap_or_else(|err| {
-            eprintln!("error: could not read file: {err}");
-            process::exit(1);
-    }));
-            
-
+                eprintln!("error: could not read file: {err}");
+                process::exit(1);
+        }));
     }
     
     /* takes user-inputted options from the shell and

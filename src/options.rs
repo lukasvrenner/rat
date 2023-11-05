@@ -38,7 +38,7 @@ fn number_lines(text: &str) -> String {
     text
         .lines()
         .enumerate()
-        .map(|(i, line)| format!("     {}  {line}\n", i+1)) // currently causes test to fail
+        .map(|(i, line)| format!("{0:6}  {line}\n", i+1)) // currently causes test to fail
         .collect()
 }
 
@@ -50,7 +50,7 @@ fn number_nonblank(text: &str) -> String {
         .map(|line| {
             if !line.is_empty() {
                 count += 1;
-                return format!("     {count}  {line}\n");
+                return format!("{0:6}  {line}\n", count);
             } else {
                 return format!("        {line}\n");
             }
