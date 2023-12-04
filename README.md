@@ -15,7 +15,7 @@ This project has not yet been published to rust.io for various reasons:
 - squeeze-blank: remove consequtive output lines
 
 #### Current Issues
-- when a file has ten or more lines, code becomes indented instead of the line number
+- file size is currently very large (some weird clap thing)
 - doesn't support piping yet
 - might consider moving Args to options file
 
