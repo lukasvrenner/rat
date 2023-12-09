@@ -23,10 +23,8 @@ fn squeeze_blank(text: &str) -> String {
         .filter_map(|line| {
             if prev_line_is_blank && line.is_empty() {
                 return None
-            } else if line.is_empty() {
-                prev_line_is_blank = true;
             } else {
-                prev_line_is_blank = false;
+                prev_line_is_blank = line.is_empty();
             }
             Some(format!("{line}\n"))
         })
@@ -50,9 +48,9 @@ fn number_nonblank(text: &str) -> String {
         .map(|line| {
             if !line.is_empty() {
                 count += 1;
-                return format!("{0:6}  {line}\n", count);
+                format!("{0:6}  {line}\n", count)
             } else {
-                return format!("        {line}\n");
+                format!("        {line}\n")
             }
         })
         .collect()
