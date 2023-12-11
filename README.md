@@ -15,7 +15,6 @@ This project has not yet been published to rust.io for various reasons:
 - squeeze-blank: remove consequtive output lines
 
 #### Current Issues
-- file size is currently very large (some weird clap thing)
 - doesn't support piping yet
 - might consider moving Args to options file
 
